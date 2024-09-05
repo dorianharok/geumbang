@@ -16,7 +16,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthException::class)
     fun handleAuthException(e: AuthException): ResponseEntity<ApiResponse<Nothing>> {
-        log.warn("AuthException", e)
+        log.warn("AuthException : {}", e.message, e)
 
         return ResponseEntity.status(e.httpStatus).body(ApiResponse.error(e.message))
     }
@@ -24,6 +24,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): ResponseEntity<ApiResponse<Nothing>> {
         log.error("Exception : {}", e.message, e)
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.error("An unexpected error has occurred."))
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ApiResponse.error("An unexpected error has occurred."))
     }
 }
