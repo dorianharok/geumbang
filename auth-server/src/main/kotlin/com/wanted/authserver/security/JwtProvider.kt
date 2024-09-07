@@ -1,7 +1,7 @@
 package com.wanted.authserver.security
 
-import com.wanted.authserver.support.TokenExpiredException
-import com.wanted.authserver.support.TokenInvalidException
+import com.wanted.authserver.exception.TokenExpiredException
+import com.wanted.authserver.exception.TokenInvalidException
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -70,7 +70,7 @@ class JwtProvider(
             .parseSignedClaims(token)
             .payload
 
-        return claims["id"]?.toString()?.toLongOrNull()
+        return claims[USER_ID]?.toString()?.toLongOrNull()
             ?: throw TokenInvalidException()
     }
 

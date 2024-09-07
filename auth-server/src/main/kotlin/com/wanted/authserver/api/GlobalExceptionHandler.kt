@@ -1,11 +1,12 @@
 package com.wanted.authserver.api
 
-import com.wanted.authserver.support.AuthException
+import com.wanted.authserver.exception.AuthException
 import com.wanted.common.ApiResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -19,6 +20,13 @@ class GlobalExceptionHandler {
         log.warn("AuthException : {}", e.message, e)
 
         return ResponseEntity.status(e.httpStatus).body(ApiResponse.error(e.message))
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleInvalidRequestBodyException(e: MethodArgumentNotValidException): ResponseEntity<ApiResponse<List<String>>> {
+        val allErrors = e.fieldErrors.map { it.defaultMessage!! }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(allErrors))
     }
 
     @ExceptionHandler(Exception::class)

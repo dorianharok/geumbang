@@ -14,6 +14,9 @@ data class ApiResponse<T>(
 
         fun error(message: String): ApiResponse<Nothing> =
             ApiResponse(ResultType.ERROR, message)
+
+        fun <T> error(data: T): ApiResponse<T> =
+            ApiResponse(ResultType.ERROR, null, data)
     }
 }
 

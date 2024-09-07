@@ -30,4 +30,8 @@ class JwtTokenFilter(
 
         filterChain.doFilter(request, response)
     }
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        return true
+    }
 }

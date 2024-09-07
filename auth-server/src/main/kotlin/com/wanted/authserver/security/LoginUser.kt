@@ -34,4 +34,6 @@ class LoginUser(
     override fun isEnabled(): Boolean {
         return true
     }
+
+    val id = userId
 }

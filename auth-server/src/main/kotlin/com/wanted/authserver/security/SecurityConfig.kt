@@ -60,24 +60,25 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers(
-                        "/swagger-ui.html",
-                        "/swagger-ui/**",
-                        "/api-docs/**",
-                        "/swagger-resources/**",
-                        "/webjars/**",
-                        "/static/openapi/**",
-                        "/openapi/**",
-                        "/static/**")
-                    .permitAll()
-                    .requestMatchers(
-                        "/v1/users/join",
-                        "/v1/users/login",
-                        "/v1/users/reissue",
-                        "/test"
-                    )
-                    .permitAll()
-                    .anyRequest().authenticated()
+//                    .requestMatchers(
+//                        "/swagger-ui.html",
+//                        "/swagger-ui/**",
+//                        "/api-docs/**",
+//                        "/swagger-resources/**",
+//                        "/webjars/**",
+//                        "/static/openapi/**",
+//                        "/openapi/**",
+//                        "/static/**")
+//                    .permitAll()
+//                    .requestMatchers(
+//                        "/v1/users/join",
+//                        "/v1/users/login",
+//                        "/v1/users/reissue",
+//                        "/test"
+//                    )
+//                    .permitAll()
+//                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
             }
             .addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
 
