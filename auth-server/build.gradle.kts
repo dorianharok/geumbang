@@ -34,4 +34,7 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers:1.20.1")
 	testImplementation("org.testcontainers:junit-jupiter:1.20.1")
 	testImplementation("org.testcontainers:mariadb:1.19.3")
+
+	// grpc
+	implementation("net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE")
 }
