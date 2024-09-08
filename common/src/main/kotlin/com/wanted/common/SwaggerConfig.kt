@@ -20,7 +20,8 @@ class SwaggerConfig {
         val securitySchemeName = "bearerAuth"
         return OpenAPI()
             .info(Info().title(API_TITLE).description(API_DESCRIPTION))
-            .addServersItem(Server().url("http://localhost:8080").description("LOCAL SERVER"))
+            .addServersItem(Server().url("http://localhost:8888").description("AUTH SERVER"))
+            .addServersItem(Server().url("http://localhost:9999").description("RESOURCE SERVER"))
             .components(
                 Components()
                     .addSecuritySchemes(
