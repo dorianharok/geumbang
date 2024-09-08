@@ -15,4 +15,7 @@ interface UserApi {
 
     @Operation(summary = "유저 로그인 API")
     fun login(request: UserLoginRequest): ApiResponse<TokenResponse>
+
+    @Operation(summary = "유저 토큰 재발행 API")
+    fun reIssue(token: String?): ApiResponse<TokenResponse>
 }

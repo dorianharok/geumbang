@@ -9,6 +9,7 @@ import com.wanted.common.ApiResponse
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -26,6 +27,13 @@ class UserController(
     @PostMapping("/api/v1/users/login")
     override fun login(@RequestBody request: UserLoginRequest): ApiResponse<TokenResponse> {
         val tokenPair = userService.login(request.username, request.password)
+
+        return ApiResponse.success(TokenResponse(tokenPair))
+    }
+
+    @PostMapping("/api/v1/users/reIssue")
+    override fun reIssue(@RequestHeader("Authorization") token: String?): ApiResponse<TokenResponse> {
+        val tokenPair = userService.reIssue(token)
 
         return ApiResponse.success(TokenResponse(tokenPair))
     }

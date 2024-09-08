@@ -1,4 +1,4 @@
-package com.wanted.authserver.security
+package com.wanted.authserver.jwt
 
 import com.wanted.authserver.exception.TokenExpiredException
 import com.wanted.authserver.exception.TokenInvalidException
@@ -8,12 +8,18 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import java.util.*
 import javax.crypto.SecretKey
 
+@Component
 class JwtProvider(
+    @Value("\${security.jwt.secret}")
     private val secretString: String,
+    @Value("\${security.jwt.expiration.access}")
     private val accessTokenValidityInMilliseconds: Long,
+    @Value("\${security.jwt.expiration.refresh}")
     private val refreshTokenValidityInMilliseconds: Long
 ) {
     private val secretKey: SecretKey
@@ -82,5 +88,13 @@ class JwtProvider(
         }
 
         return null
+    }
+
+    fun removePrefix(token: String?): String {
+        if(token == null || !token.startsWith(TOKEN_PREFIX)) {
+            throw TokenInvalidException()
+        }
+
+        return token.removePrefix(TOKEN_PREFIX)
     }
 }

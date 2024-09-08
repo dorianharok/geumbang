@@ -3,7 +3,6 @@ package com.wanted.authserver.domain
 import com.wanted.authserver.exception.InvalidPasswordException
 import com.wanted.authserver.exception.UserNotFoundException
 import com.wanted.authserver.fixture.UserFixture
-import com.wanted.authserver.security.JwtProvider
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
@@ -11,6 +10,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers.anyString
 
 @ExtendWith(MockKExtension::class)
 class UserLoginProcessorTest {
@@ -26,7 +26,7 @@ class UserLoginProcessorTest {
         val user = UserFixture.user()
         val username = user.username
         val password = user.password
-        every { userReader.read(any()) } returns user
+        every { userReader.read(anyString()) } returns user
         every { passwordEncoder.matches(any(), any()) } returns true
         every { tokenIssuer.issueTokenPair(any()) } returns TokenPair("access token", "refresh token")
 
@@ -44,7 +44,7 @@ class UserLoginProcessorTest {
         val user = UserFixture.user()
         val username = user.username
         val password = user.password
-        every { userReader.read(any()) } returns user
+        every { userReader.read(anyString()) } returns user
         every { passwordEncoder.matches(any(), any()) } returns false
 
         // when & then
@@ -58,7 +58,7 @@ class UserLoginProcessorTest {
         // given
         val username = "wrong username"
         val password = "wrong password"
-        every { userReader.read(any()) } throws UserNotFoundException()
+        every { userReader.read(anyString()) } throws UserNotFoundException()
 
         // when & then
         assertThrows<UserNotFoundException> {
@@ -71,7 +71,7 @@ class UserLoginProcessorTest {
         val user = UserFixture.user()
         val username = user.username
         val password = user.password
-        every { userReader.read(any()) } returns user
+        every { userReader.read(anyString()) } returns user
         every { passwordEncoder.matches(any(), any()) } returns true
         every { tokenIssuer.issueTokenPair(any()) } returns TokenPair("access token", "refresh token")
 
@@ -88,7 +88,7 @@ class UserLoginProcessorTest {
         val user = UserFixture.user()
         val username = user.username
         val password = user.password
-        every { userReader.read(any()) } returns user
+        every { userReader.read(anyString()) } returns user
         every { passwordEncoder.matches(any(), any()) } returns true
         every { tokenIssuer.issueTokenPair(any()) } returns TokenPair("access token", "refresh token")
 
