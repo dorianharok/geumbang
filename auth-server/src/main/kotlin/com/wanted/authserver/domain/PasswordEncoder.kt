@@ -1,13 +1,20 @@
 package com.wanted.authserver.domain
 
 import org.mindrot.jbcrypt.BCrypt
+import org.springframework.stereotype.Component
 
-object PasswordEncoder {
-    fun encode(rawPassword: String): String {
+interface PasswordEncoder {
+    fun encode(rawPassword: String): String
+    fun matches(rawPassword: String, encodedPassword: String): Boolean
+}
+
+@Component
+class BcryptPasswordEncoder:PasswordEncoder {
+    override fun encode(rawPassword: String): String {
         return BCrypt.hashpw(rawPassword, BCrypt.gensalt())
     }
 
-    fun matches(rawPassword: String, encodedPassword: String): Boolean {
+    override fun matches(rawPassword: String, encodedPassword: String): Boolean {
         return BCrypt.checkpw(rawPassword, encodedPassword)
     }
 }

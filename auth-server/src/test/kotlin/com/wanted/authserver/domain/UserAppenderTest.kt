@@ -15,12 +15,14 @@ import org.junit.jupiter.api.extension.ExtendWith
 class UserAppenderTest {
 
     private val userRepository = mockk<UserRepository>()
-    private val userAppender = UserAppender(userRepository)
+    private val passwordEncoder = mockk<PasswordEncoder>()
+    private val userAppender = UserAppender(userRepository, passwordEncoder)
 
     @Test
     fun `회원가입시 유저 비밀번호는 암호화된다`() {
         // Given
         val initUser = UserFixture.initUser()
+        every { passwordEncoder.encode(any()) } returns "encodedPassword123"
         every { userRepository.save(initUser) } returns UserFixture.user()
 
         // When
@@ -34,6 +36,7 @@ class UserAppenderTest {
     fun `유저 회원가입을 한다`() {
         // Given
         val initUser = UserFixture.initUser()
+        every { passwordEncoder.encode(any()) } returns "encodedPassword123"
         every { userRepository.save(initUser) } returns UserFixture.user()
 
         // When

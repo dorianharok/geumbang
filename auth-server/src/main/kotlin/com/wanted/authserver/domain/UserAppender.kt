@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class UserAppender(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
     fun append(user: User): User {
-        user.encodePassword()
+        val encodedPassword = passwordEncoder.encode(user.password)
+        user.changePassword(encodedPassword)
         return userRepository.save(user)
     }
 }

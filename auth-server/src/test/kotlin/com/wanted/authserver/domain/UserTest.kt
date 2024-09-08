@@ -6,7 +6,6 @@ import com.wanted.authserver.fixture.UserFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.assertThrows
 
 class UserTest {
@@ -14,9 +13,9 @@ class UserTest {
     @Test
     fun `유저 비밀번호를 암호화한다`() {
         val user = UserFixture.initUser()
-        user.encodePassword()
+        user.changePassword("encodedPassword")
 
-        assertThat(user.password).isNotEqualTo("asdf")
+        assertThat(user.password).isEqualTo("encodedPassword")
     }
 
     /**
