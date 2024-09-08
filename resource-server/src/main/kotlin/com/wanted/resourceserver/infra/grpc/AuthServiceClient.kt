@@ -14,7 +14,6 @@ class AuthServiceClient(private val authServerHost: String, private val authServ
         .build()
 
     private val stub = AuthServiceGrpc.newBlockingStub(channel)
-        .withDeadlineAfter(5, TimeUnit.SECONDS)
 
     fun validateToken(token: String): ValidateTokenResponse {
         val request = ValidateTokenRequest.newBuilder().setToken(token).build()
