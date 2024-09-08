@@ -2,6 +2,7 @@ package com.wanted.resourceserver.api
 
 import com.wanted.common.ApiResponse
 import com.wanted.resourceserver.support.CoreException
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -15,8 +16,8 @@ class GlobalExceptionHandler {
     private val log: Logger = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(CoreException::class)
-    fun handleAuthException(e: CoreException): ResponseEntity<ApiResponse<Nothing>> {
-        log.warn("CoreException : {}", e.message, e)
+    fun handleAuthException(e: CoreException, request: HttpServletRequest): ResponseEntity<ApiResponse<Nothing>> {
+        log.warn("CoreException : {}, URI: {}", e.message, request.requestURL, e)
 
         return ResponseEntity.status(e.httpStatus).body(ApiResponse.error(e.message))
     }
