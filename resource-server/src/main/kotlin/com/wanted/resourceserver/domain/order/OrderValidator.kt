@@ -21,13 +21,13 @@ class OrderValidator(
 
     private fun validateOrderItemPrice(item: OrderItem, price: BigDecimal) {
         if(item.price != price) {
-            throw PriceMismatchException()
+            throw PriceMismatchException("현재 금 시세 $price, 요청 시세 ${item.price}")
         }
     }
 
     private fun validateOrderItemGoldType(item: OrderItem, goldType: GoldType) {
         if(item.goldType != goldType) {
-            throw GoldTypeMismatchException()
+            throw GoldTypeMismatchException("요청 type ${item.goldType}, product gold type: $goldType")
         }
     }
 }

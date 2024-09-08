@@ -10,7 +10,7 @@ class Product(
     @Column(nullable = false, unique = true)
     val type: GoldType,
 
-    @Column(nullable = false, precision = 10, scale = 0)
+    @Column(nullable = false, precision = 10, scale = 2)
     var price: BigDecimal,
 
     @Id

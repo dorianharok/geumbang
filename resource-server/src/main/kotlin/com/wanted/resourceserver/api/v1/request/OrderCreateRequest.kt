@@ -14,6 +14,7 @@ data class OrderCreateRequest(
     val type: OrderType,
     @field:NotBlank(message = "상품은 필수입니다.")
     val orderItem: OrderItemCreateRequest,
+    @Schema(description = "배송지", example = "서울시 송파구")
     @field:NotBlank(message = "배송지는 필수입니다.")
     val shippingAddress: String
 ) {
@@ -23,7 +24,9 @@ data class OrderCreateRequest(
         userId = userId,
         status = OrderStatus.ORDER_COMPLETED,
         type = type,
-        totalPrice = orderItem.getTotalPrice(),
+        totalPrice = orderItem.calculateTotalPrice(),
         shippingAddress = shippingAddress,
     )
+
+    fun toOrderItem() = orderItem.toOrderItem()
 }

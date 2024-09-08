@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class LoginUser(
-    private val user: User
+    val user: User
 ): UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
         return mutableListOf<GrantedAuthority>(SimpleGrantedAuthority("ROLE_USER"))
@@ -35,4 +35,6 @@ class LoginUser(
     override fun isEnabled(): Boolean {
         return true
     }
+
+    val id = user.id
 }
