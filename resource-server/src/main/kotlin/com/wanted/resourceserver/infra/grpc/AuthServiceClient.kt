@@ -1,4 +1,4 @@
-package com.wanted.resourceserver.grpc
+package com.wanted.resourceserver.infra.grpc
 
 import com.wanted.common.grpc.AuthServiceGrpc
 import com.wanted.common.grpc.ValidateTokenRequest

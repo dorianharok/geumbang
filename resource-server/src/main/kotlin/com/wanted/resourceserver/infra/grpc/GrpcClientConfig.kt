@@ -1,4 +1,4 @@
-package com.wanted.resourceserver.grpc
+package com.wanted.resourceserver.infra.grpc
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
