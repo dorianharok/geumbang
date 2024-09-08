@@ -25,8 +25,12 @@ class User(
         validatePassword()
     }
 
-    fun encodePassword() {
-        this.password = PasswordEncoder.encode(password)
+    fun changePassword(encodedPassword: String) {
+        this.password = encodedPassword
+    }
+
+    fun updateRefreshToken(refreshToken: String) {
+        this.refreshToken = refreshToken
     }
 
     private fun validateUsername() {
