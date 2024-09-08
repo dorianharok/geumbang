@@ -1,6 +1,6 @@
 package com.wanted.resourceserver.security
 
-import com.wanted.resourceserver.grpc.AuthServiceClient
+import com.wanted.resourceserver.infra.grpc.AuthServiceClient
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
