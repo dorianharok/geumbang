@@ -33,7 +33,7 @@ class SecurityConfig(
         config.authenticationManager
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity, exceptionHandlerFilter: ExceptionHandlerFilter): SecurityFilterChain {
         http
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
@@ -58,6 +58,7 @@ class SecurityConfig(
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(exceptionHandlerFilter, JwtTokenFilter::class.java)
 
         return http.build()
     }

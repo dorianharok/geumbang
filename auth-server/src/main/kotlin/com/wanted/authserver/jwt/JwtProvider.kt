@@ -22,7 +22,7 @@ class JwtProvider(
     @Value("\${security.jwt.expiration.refresh}")
     private val refreshTokenValidityInMilliseconds: Long
 ) {
-    private val secretKey: SecretKey
+    private final val secretKey: SecretKey
 
     companion object {
         const val USER_ID = "userId"

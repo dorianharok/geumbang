@@ -1,5 +1,7 @@
 package com.wanted.resourceserver.security
 
+import com.wanted.resourceserver.exception.TokenInvalidException
+import com.wanted.resourceserver.exception.TokenNotFoundException
 import com.wanted.resourceserver.infra.grpc.AuthServiceClient
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -12,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtTokenFilter(
-    private val authServiceClient: AuthServiceClient
+    private val authServiceClient: AuthServiceClient,
 ) : OncePerRequestFilter() {
 
     private val pathMatcher = AntPathMatcher()
@@ -20,18 +22,23 @@ class JwtTokenFilter(
     companion object {
         const val TOKEN_PREFIX = "Bearer "
     }
-    override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-        val token = extractToken(request)
 
-        if (token != null) {
-            val validateResponse = authServiceClient.validateToken(token)
-            if(validateResponse.isValid) {
-                val user = validateResponse.user
-                val loginUser = LoginUser(com.wanted.resourceserver.domain.User(user.userId.toLong(), user.username))
-                val authentication = UsernamePasswordAuthenticationToken(loginUser, null, loginUser.authorities)
-                SecurityContextHolder.getContext().authentication = authentication
-            }
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
+        val token = extractToken(request) ?: throw TokenNotFoundException()
+
+        val validateResponse = authServiceClient.validateToken(token)
+        if (!validateResponse.isValid) {
+            throw TokenInvalidException()
         }
+
+        val user = validateResponse.user
+        val loginUser = LoginUser(com.wanted.resourceserver.domain.User(user.userId.toLong(), user.username))
+        val authentication = UsernamePasswordAuthenticationToken(loginUser, null, loginUser.authorities)
+        SecurityContextHolder.getContext().authentication = authentication
 
         filterChain.doFilter(request, response)
     }

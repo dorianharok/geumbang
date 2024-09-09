@@ -8,9 +8,10 @@ import org.springframework.http.MediaType
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 
-class CustomAuthenticationEntryPoint: AuthenticationEntryPoint {
+class CustomAuthenticationEntryPoint : AuthenticationEntryPoint {
 
     private val objectMapper = ObjectMapper()
+
     override fun commence(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -23,6 +24,7 @@ class CustomAuthenticationEntryPoint: AuthenticationEntryPoint {
         val errorResponse = ApiResponse.error(errorMessage)
         val jsonResponse = objectMapper.writeValueAsString(errorResponse)
 
+        response.characterEncoding = "UTF-8"
         response.writer.write(jsonResponse)
     }
 }
