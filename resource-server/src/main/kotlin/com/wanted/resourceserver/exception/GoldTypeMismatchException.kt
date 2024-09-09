@@ -1,4 +1,4 @@
-package com.wanted.resourceserver.support
+package com.wanted.resourceserver.exception
 
 import org.springframework.http.HttpStatus
 

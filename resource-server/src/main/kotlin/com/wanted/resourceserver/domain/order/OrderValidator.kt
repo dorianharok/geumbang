@@ -3,8 +3,8 @@ package com.wanted.resourceserver.domain.order
 import com.wanted.resourceserver.domain.order.item.OrderItem
 import com.wanted.resourceserver.domain.product.GoldType
 import com.wanted.resourceserver.domain.product.ProductReader
-import com.wanted.resourceserver.support.GoldTypeMismatchException
-import com.wanted.resourceserver.support.PriceMismatchException
+import com.wanted.resourceserver.exception.GoldTypeMismatchException
+import com.wanted.resourceserver.exception.PriceMismatchException
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
 

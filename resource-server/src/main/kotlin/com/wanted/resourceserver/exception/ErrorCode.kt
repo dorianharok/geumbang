@@ -1,4 +1,4 @@
-package com.wanted.resourceserver.support
+package com.wanted.resourceserver.exception
 
 enum class ErrorCode(val defaultMessage: String) {
     EXAMPLE_CODE("example error"),

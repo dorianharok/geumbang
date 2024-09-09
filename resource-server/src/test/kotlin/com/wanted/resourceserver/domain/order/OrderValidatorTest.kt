@@ -4,8 +4,8 @@ import com.wanted.resourceserver.domain.order.item.OrderItem
 import com.wanted.resourceserver.domain.product.GoldType
 import com.wanted.resourceserver.domain.product.ProductReader
 import com.wanted.resourceserver.fixture.ProductFixture
-import com.wanted.resourceserver.support.GoldTypeMismatchException
-import com.wanted.resourceserver.support.PriceMismatchException
+import com.wanted.resourceserver.exception.GoldTypeMismatchException
+import com.wanted.resourceserver.exception.PriceMismatchException
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk

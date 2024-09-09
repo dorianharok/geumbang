@@ -3,7 +3,7 @@ package com.wanted.resourceserver.domain.order
 import com.wanted.resourceserver.domain.ContainerTest
 import com.wanted.resourceserver.fixture.OrderFixture
 import com.wanted.resourceserver.fixture.ProductFixture
-import com.wanted.resourceserver.support.PriceMismatchException
+import com.wanted.resourceserver.exception.PriceMismatchException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.repository.findByIdOrNull
 import java.math.BigDecimal
-import java.time.LocalDateTime
 
 class OrderServiceTest: ContainerTest() {
 
@@ -35,6 +34,21 @@ class OrderServiceTest: ContainerTest() {
         // then
         assertThat(orderRepository.findByIdOrNull(orderId)).isNotNull
         assertThat(orderItemRepository.findAll().size).isOne
+    }
+
+    @Test
+    fun `주문을 생성 직후 상태는 주문 완료이다`() {
+        // given
+        val product = productRepository.save(ProductFixture.gold999())
+        val initOrder = OrderFixture.initOrder()
+        val initOrderItem = OrderFixture.createOrderItem(product.price, product.id, null)
+
+        // when
+        val orderId = orderService.order(initOrder, initOrderItem)
+
+        // then
+        val order = orderRepository.findByIdOrNull(orderId)
+        assertThat(order!!.status).isEqualTo(OrderStatus.ORDER_COMPLETED)
     }
 
     @Test

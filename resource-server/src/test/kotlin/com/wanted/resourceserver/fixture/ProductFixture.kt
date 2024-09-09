@@ -8,13 +8,13 @@ object ProductFixture {
 
     fun gold999() = Product(
         type = GoldType.GOLD_999,
-        price = BigDecimal.valueOf(110000),
+        price = BigDecimal.valueOf(110000.00).setScale(2),
         id = 1L
     )
 
     fun gold9999() = Product(
         type = GoldType.GOLD_9999,
-        price = BigDecimal.valueOf(100000),
+        price = BigDecimal.valueOf(100000.00).setScale(2),
         id = 2L
     )
 }

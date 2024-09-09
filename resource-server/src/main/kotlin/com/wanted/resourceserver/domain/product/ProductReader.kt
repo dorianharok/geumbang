@@ -1,7 +1,7 @@
 package com.wanted.resourceserver.domain.product
 
 import com.wanted.resourceserver.infra.db.ProductRepository
-import com.wanted.resourceserver.support.EntityNotFoundException
+import com.wanted.resourceserver.exception.EntityNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
