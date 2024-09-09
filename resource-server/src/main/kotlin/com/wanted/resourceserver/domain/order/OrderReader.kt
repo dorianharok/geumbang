@@ -1,11 +1,13 @@
 package com.wanted.resourceserver.domain.order
 
+import com.wanted.resourceserver.exception.EntityNotFoundException
 import com.wanted.resourceserver.infra.db.OrderItemRepository
 import com.wanted.resourceserver.infra.db.OrderRepository
 import com.wanted.resourceserver.support.LinksResponse
 import com.wanted.resourceserver.support.PaginationResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 
 @Component
@@ -54,5 +56,9 @@ class OrderReader(
         } else null
 
         return LinksResponse(selfLink, firstLink, previousLink, nextLink, lastLink)
+    }
+
+    fun read(orderId: Long): Order {
+        return orderRepository.findByIdOrNull(orderId) ?: throw EntityNotFoundException()
     }
 }

@@ -1,6 +1,8 @@
 package com.wanted.resourceserver.domain.order
 
 import com.wanted.resourceserver.domain.ContainerTest
+import com.wanted.resourceserver.exception.EntityNotFoundException
+import com.wanted.resourceserver.exception.OrderStatusException
 import com.wanted.resourceserver.fixture.OrderFixture
 import com.wanted.resourceserver.fixture.ProductFixture
 import com.wanted.resourceserver.exception.PriceMismatchException
@@ -66,16 +68,41 @@ class OrderServiceTest: ContainerTest() {
     }
 
     @Test
-    fun `현재 금값과 주문 가격이 다를 경우 주문할 수 없다`() {
+    fun `결제가 완료되면 OrderStatus가 업데이트된다`() {
         // given
-        val product = productRepository.save(ProductFixture.gold999())
-        val initOrder = OrderFixture.initOrder()
-        val initOrderItem = OrderFixture.createOrderItem(BigDecimal.valueOf(88000), product.id, null)
+        val order = orderRepository.save(OrderFixture.initOrder())
+
+        // when
+        orderService.pay(order.id)
+
+        // & then
+        val findOrder = orderRepository.findByIdOrNull(order.id)
+        assertThat(findOrder!!.status).isEqualTo(OrderStatus.PAYMENT_COMPLETED)
+    }
+
+    @Test
+    fun `결제가 되지 않으면 배송을 할 수 없다`() {
+        // given
+        val order = orderRepository.save(OrderFixture.initOrder())
 
         // when & then
-        assertThrows<PriceMismatchException> {
-            orderService.order(initOrder, initOrderItem)
+        assertThrows<OrderStatusException> {
+            orderService.shipping(order.id)
         }
+    }
+
+    @Test
+    fun `배송이 완료되면 OrderStatus가 업데이트된다`() {
+        // given
+        val order = orderRepository.save(OrderFixture.initOrder())
+        orderService.pay(order.id)
+
+        // when
+        orderService.shipping(order.id)
+
+        // & then
+        val findOrder = orderRepository.findByIdOrNull(order.id)
+        assertThat(findOrder!!.status).isEqualTo(OrderStatus.DELIVERY_COMPLETED)
     }
 
 }

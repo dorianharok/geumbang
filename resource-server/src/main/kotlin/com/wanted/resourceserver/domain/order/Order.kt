@@ -1,5 +1,6 @@
 package com.wanted.resourceserver.domain.order
 
+import com.wanted.resourceserver.exception.OrderStatusException
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -33,7 +34,22 @@ class Order(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-)
+) {
+    fun pay() {
+        if(!status.canPay(this.status)) {
+            throw OrderStatusException("요청 status: ${OrderStatus.PAYMENT_COMPLETED}, 현재 status: ${this.status}")
+        }
+        this.status = OrderStatus.PAYMENT_COMPLETED
+    }
+
+    fun shipping() {
+        if(!status.canShipping(this.status)) {
+            throw OrderStatusException("요청 status: ${OrderStatus.DELIVERY_COMPLETED}, 현재 status: ${this.status}")
+        }
+
+        this.status = OrderStatus.DELIVERY_COMPLETED
+    }
+}
 
 enum class OrderType {
     PURCHASE, SALE
@@ -50,4 +66,8 @@ enum class OrderStatus(val purchaseDescription: String, val saleDescription: Str
             OrderType.SALE -> saleDescription
         }
     }
+
+    fun canPay(status: OrderStatus): Boolean = status == ORDER_COMPLETED
+
+    fun canShipping(status: OrderStatus): Boolean = status == PAYMENT_COMPLETED
 }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDate
@@ -40,4 +41,10 @@ interface OrderApi {
 
         @AuthenticationPrincipal loginUser: LoginUser
     ): ApiResponse<PaginationResponse<InvoiceResponse>>
+
+    @Operation(summary = "결제 API")
+    fun pay(@PathVariable(value = "orderId") orderId: Long): ApiResponse<Void>
+
+    @Operation(summary = "배송 API")
+    fun shipping(@PathVariable(value = "orderId") orderId: Long): ApiResponse<Void>
 }

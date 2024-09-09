@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service
 class OrderService(
     private val orderAppender: OrderAppender,
     private val orderValidator: OrderValidator,
-    private val orderReader: OrderReader
+    private val orderReader: OrderReader,
+    private val orderUpdater: OrderUpdater
 ) {
     fun order(order: Order, orderItem: OrderItem): Long {
         orderValidator.validateOrderItem(orderItem)
@@ -18,5 +19,13 @@ class OrderService(
 
     fun getInvoices(request:PaginationRequest, userId: Long): PaginationResponse<Invoice> {
         return orderReader.getInvoices(request, userId)
+    }
+
+    fun pay(orderId: Long) {
+        orderUpdater.pay(orderId)
+    }
+
+    fun shipping(orderId: Long) {
+        orderUpdater.shipping(orderId)
     }
 }

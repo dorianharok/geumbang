@@ -43,4 +43,18 @@ class OrderController(
 
         return ApiResponse.success(result)
     }
+
+    @PostMapping("/api/v1/orders/{orderId}/payment")
+    override fun pay(@PathVariable orderId: Long): ApiResponse<Void> {
+        orderService.pay(orderId)
+
+        return ApiResponse.success()
+    }
+
+    @PostMapping("/api/v1/orders/{orderId}/shipping")
+    override fun shipping(@PathVariable orderId: Long): ApiResponse<Void> {
+        orderService.shipping(orderId)
+
+        return ApiResponse.success()
+    }
 }
