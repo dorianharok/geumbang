@@ -1,0 +1,78 @@
+services:
+  auth-db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: ${AUTH_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: authdb
+      MYSQL_USER: ${AUTH_DB_USER}
+      MYSQL_PASSWORD: ${AUTH_DB_PASSWORD}
+    volumes:
+      - auth-db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${AUTH_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  resource-db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: ${RESOURCE_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: resourcedb
+      MYSQL_USER: ${RESOURCE_DB_USER}
+      MYSQL_PASSWORD: ${RESOURCE_DB_PASSWORD}
+    volumes:
+      - resource-db-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${RESOURCE_DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-server:
+    build:
+      context: .
+      dockerfile: auth-server/Dockerfile
+    ports:
+      - "8888:8888"
+      - "50051:50051"
+    depends_on:
+      - auth-db
+    environment:
+#      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: auth-db
+      DB_PORT: 3306
+      DB_NAME: authdb
+      DB_USERNAME: ${AUTH_DB_USER}
+      DB_PASSWORD: ${AUTH_DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+
+  resource-server:
+    build:
+      context: .
+      dockerfile: resource-server/Dockerfile
+    volumes:
+      - ./resource-server/src/main/resources/data.sql:/app/data.sql
+    ports:
+      - "9999:9999"
+      - "50052:50052"
+    depends_on:
+      - resource-db
+      - auth-server
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: resource-db
+      DB_PORT: 3306
+      DB_NAME: resourcedb
+      DB_USERNAME: ${RESOURCE_DB_USER}
+      DB_PASSWORD: ${RESOURCE_DB_PASSWORD}
+      AUTH_SERVER_HOST: auth-server
+      AUTH_SERVER_PORT: 50051
+
+volumes:
+  auth-db-data:
+  resource-db-data:

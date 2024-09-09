@@ -1,0 +1,34 @@
+server:
+  port: 9999
+grpc:
+  auth:
+    host: ${AUTH_SERVER_HOST}
+    port: ${AUTH_SERVER_PORT}
+  server:
+    port: 50052
+
+spring:
+  datasource:
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MariaDBDialect
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
