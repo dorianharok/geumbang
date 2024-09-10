@@ -64,7 +64,7 @@ services:
       - resource-db
       - auth-server
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+#      SPRING_PROFILES_ACTIVE: docker
       DB_HOST: resource-db
       DB_PORT: 3306
       DB_NAME: resourcedb

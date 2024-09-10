@@ -13,4 +13,8 @@ class ProductReader(
     fun read(productId: Long): Product {
         return productRepository.findByIdOrNull(productId) ?: throw EntityNotFoundException()
     }
+
+    fun readAll(): List<Product> {
+        return productRepository.findAll()
+    }
 }
