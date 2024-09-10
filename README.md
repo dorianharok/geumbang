@@ -56,9 +56,6 @@ Swagger UI를 통해 API 문서를 확인할 수 있습니다:
 - Auth Server: http://localhost:8888/swagger-ui.html
 - Resource Server: http://localhost:9999/swagger-ui.html
 
-## 📮 Postman
-### [Postman 컬렉션 링크]
-
 ## 데이터베이스 스키마
 ![img](https://github.com/user-attachments/assets/9045970e-7ffe-4734-9b7b-b25832d256d8)
 ### [DB diagram 링크](https://dbdiagram.io/d/66df0a47550cd927eaa3fde7)
